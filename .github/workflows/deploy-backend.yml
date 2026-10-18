@@ -10,11 +10,13 @@
 #   IP_SALT                Any long random text (used to hash IPs for rate limiting)
 name: Deploy backend
 
+# Manual for now: the backend was first deployed from the Cloudflare dashboard.
+# To switch on automatic deploys, add the secrets below and uncomment "push".
 on:
-  push:
-    branches: [main]
-    paths: ["worker/**", ".github/workflows/deploy-backend.yml"]
   workflow_dispatch:
+  # push:
+  #   branches: [main]
+  #   paths: ["worker/**"]
 
 jobs:
   deploy:
@@ -42,7 +44,6 @@ jobs:
           missing=""
           [ -z "$T" ] && missing="$missing CLOUDFLARE_API_TOKEN"
           [ -z "$A" ] && missing="$missing CLOUDFLARE_ACCOUNT_ID"
-          [ -z "$D" ] && missing="$missing D1_DATABASE_ID"
           [ -z "$K" ] && missing="$missing ADMIN_KEY"
           if [ -n "$missing" ]; then echo "::error::Missing repository secrets:$missing"; exit 1; fi
 
