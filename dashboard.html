@@ -219,7 +219,7 @@ const card=(cls,title,sub,body)=>`<section class="card ${cls}"><div class="chead
 
 /* ---------- draw ---------- */
 function draw(){const d=DATA;if(!d)return;$("#updated").textContent="آخر تحديث: "+new Date(d.updated||Date.now()).toLocaleTimeString("en-GB");
-  if(d.hidden||d.n<10){$("#grid").innerHTML=`<div class="hidden-note"><h2 class="num">${fmt(d.n)} مشاركة حتى الآن</h2><p>نعرض الأرقام عندما تصل المشاركات إلى 10 على الأقل، حتى لا تكون مضللة.</p></div>`;return}
+  if(d.hidden||d.n<10){$("#grid").innerHTML=`<div class="hidden-note"><h2 class="num">عدد المشاركات حتى الآن: ${fmt(d.n)}</h2><p>نعرض الأرقام عندما تصل المشاركات إلى 10 على الأقل، حتى لا تكون مضللة.</p></div>`;return}
   const days=range?d.daily.slice(-range):d.daily,n=d.n,T7=sum(d.daily.slice(-7).map(x=>x.c)),P7=sum(d.daily.slice(-14,-7).map(x=>x.c));
   const delta=P7?Math.round((T7-P7)/P7*100):0,clinical=(d.p2[0]+d.p2[1])/Math.max(1,d.p2[0]+d.p2[1]+d.p2[2]),share=(d.s3[0]+d.s3[1])/Math.max(1,sum(d.s3));
   const high=sum(d.scoreDist.slice(7))/n;
