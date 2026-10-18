@@ -1,0 +1,16 @@
+# Cloudflare Worker for زهرة الكتان. Secrets are NOT here: set ADMIN_KEY, BREVO_API_KEY, IP_SALT
+# as GitHub repository secrets; the deploy workflow passes them to Cloudflare.
+name = "zahrat-alkattan-api"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://aymankatwa-png.github.io"
+SITE_URL = "https://aymankatwa-png.github.io/zahrat-alkattan"
+MAIL_FROM = "media@moomken.org"
+MAIL_FROM_NAME = "المركز الإعلامي · منظمة ممكن"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "zahrat-alkattan"
+database_id = "PASTE-YOUR-D1-DATABASE-ID-HERE"

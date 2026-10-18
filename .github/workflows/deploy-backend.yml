@@ -1,0 +1,74 @@
+# Deploys the backend (Cloudflare Worker + D1) every time something in worker/ changes,
+# or when you press "Run workflow" on the Actions tab.
+#
+# Repository secrets needed (Settings → Secrets and variables → Actions → New repository secret):
+#   CLOUDFLARE_API_TOKEN   Cloudflare API token ("Edit Cloudflare Workers" template + D1 Edit)
+#   CLOUDFLARE_ACCOUNT_ID  Your Cloudflare account ID
+#   D1_DATABASE_ID         The ID of the D1 database named "zahrat-alkattan"
+#   ADMIN_KEY              Long random password for the team dashboard
+#   BREVO_API_KEY          Brevo API key (for the thank-you email)
+#   IP_SALT                Any long random text (used to hash IPs for rate limiting)
+name: Deploy backend
+
+on:
+  push:
+    branches: [main]
+    paths: ["worker/**", ".github/workflows/deploy-backend.yml"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm ci
+
+      - name: Check secrets
+        env:
+          T: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          A: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          D: ${{ secrets.D1_DATABASE_ID }}
+          K: ${{ secrets.ADMIN_KEY }}
+        run: |
+          missing=""
+          [ -z "$T" ] && missing="$missing CLOUDFLARE_API_TOKEN"
+          [ -z "$A" ] && missing="$missing CLOUDFLARE_ACCOUNT_ID"
+          [ -z "$D" ] && missing="$missing D1_DATABASE_ID"
+          [ -z "$K" ] && missing="$missing ADMIN_KEY"
+          if [ -n "$missing" ]; then echo "::error::Missing repository secrets:$missing"; exit 1; fi
+
+      - name: Build email + insert database ID
+        env:
+          D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
+        run: |
+          node build-email.mjs
+          sed -i "s/PASTE-YOUR-D1-DATABASE-ID-HERE/${D1_DATABASE_ID}/" wrangler.toml
+
+      - name: Create tables (safe to run every time)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler d1 execute zahrat-alkattan --remote --file=schema.sql
+
+      - name: Deploy worker and secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          IP_SALT: ${{ secrets.IP_SALT }}
+        run: |
+          npx wrangler deploy
+          printf '%s' "$ADMIN_KEY" | npx wrangler secret put ADMIN_KEY
+          [ -n "$BREVO_API_KEY" ] && printf '%s' "$BREVO_API_KEY" | npx wrangler secret put BREVO_API_KEY || echo "BREVO_API_KEY not set yet: answers are saved, emails are skipped"
+          printf '%s' "${IP_SALT:-zahrat}" | npx wrangler secret put IP_SALT
+          echo "Backend address: https://zahrat-alkattan-api.<your-workers-subdomain>.workers.dev (shown above after 'Deployed')"

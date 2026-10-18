@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light">
+<title>حديقة النتائج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Asal";src:url(assets/fonts/asal-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Asal";src:url(assets/fonts/asal-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Asal";src:url(assets/fonts/asal-700.woff2) format("woff2");font-weight:600 700;font-display:swap}
+@font-face{font-family:"Asal";src:url(assets/fonts/asal-800.woff2) format("woff2");font-weight:800;font-display:swap}
+/* Layout: team-only analytics on the same paper-and-ink identity as the survey; summary tiles first, then knowledge, practice, barriers; single-hue flax scale so color always means "more". */
+:root{
+  --paper:#FBF8FC; --surface:#FFFFFF; --ink:#2A2160; --ink-2:#635A8C; --muted:#8A8CA8; --line:rgba(28,29,74,.12); --grid:rgba(28,29,74,.07);
+  --flax:#5B4BE0; --f1:#ECE8FD; --f2:#C9C0F8; --f3:#9C8DF1; --f4:#7462E6; --f5:#4B3BC4; --none:#D3D2DE;
+  --pollen:#F5C443; --ribbon:#E2669A; --ok:#2E8A5F;
+  --f-display:"Asal","IBM Plex Sans Arabic",serif; --f-hand:"Aref Ruqaa",serif; --f-body:"Asal","IBM Plex Sans Arabic",Tahoma,system-ui,sans-serif;
+}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{direction:rtl;margin:0;background:var(--paper);color:var(--ink);font:15px/1.65 var(--f-body);padding-top:env(safe-area-inset-top,0px)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .18 0 0 0 0 .3 0 0 0 .4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+button,input,select{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:14px;padding-block:12px;flex-wrap:wrap}
+.mark{width:66px;aspect-ratio:683/322;background:var(--ink);-webkit-mask:url(assets/moomken-mark-white.png) center/contain no-repeat;mask:url(assets/moomken-mark-white.png) center/contain no-repeat}
+h1{font-family:var(--f-display);font-weight:800;font-size:1.7rem;line-height:1.5;margin:0}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;color:var(--ink-2)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:ping 2s infinite}
+.live.demo i{background:var(--pollen);animation:none}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 60%,transparent)}100%{box-shadow:0 0 0 8px transparent}}
+.sp{flex:1}
+.ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:.85rem;cursor:pointer}
+.btn:hover{border-color:var(--flax)}
+.btn.primary{background:var(--flax);border-color:var(--flax);color:#fff}
+.btn svg{width:16px;height:16px}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--ink-2);cursor:pointer;min-height:34px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+:focus-visible{outline:3px solid var(--flax);outline-offset:2px;border-radius:8px}
+
+main{position:relative;z-index:1;padding-block:22px 60px}
+.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.intro p{margin:0;color:var(--ink-2);max-width:62ch;font-size:.9rem}
+.hand{font-family:var(--f-hand);color:var(--ribbon);font-size:1.15rem}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{grid-column:span 12;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px 20px 16px;min-width:0;position:relative}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}
+@media (max-width:1020px){.s3{grid-column:span 6}.s4,.s5,.s7,.s8{grid-column:span 12}.s6{grid-column:span 12}}
+@media (max-width:520px){.s3{grid-column:span 12}}
+.card h2{font-family:var(--f-display);font-weight:800;font-size:1.45rem;line-height:1.5;margin:0}
+.card .sub{margin:2px 0 12px;font-size:.8rem;color:var(--muted)}
+.chead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.kpi .lab{font-size:.82rem;color:var(--ink-2);font-weight:600}
+.kpi .val{font-family:var(--f-display);font-weight:700;font-size:3rem;line-height:1.3;margin:8px 0 4px}
+.kpi .val small{font-size:.45em;color:var(--ink-2);font-weight:600}
+.kpi .note{font-size:.78rem;color:var(--muted)}
+.kpi svg{display:block;width:100%;height:42px;margin-top:8px}
+.chart{width:100%;overflow-x:auto}
+.chart svg{display:block;width:100%;height:auto;overflow:visible;direction:ltr}
+.chart text{font-family:var(--f-body);fill:var(--ink-2);font-size:12px}
+.chart .val{fill:var(--ink);font-weight:600}
+.chart .gl{stroke:var(--grid)}
+.chart .hit{fill:transparent;cursor:crosshair}
+.hbars{display:grid;gap:8px}
+.hb{display:grid;grid-template-columns:minmax(0,1fr) 54px;gap:4px 10px;align-items:center;font-size:.86rem;cursor:default;border-radius:8px;padding:2px 4px}
+.hb:hover{background:color-mix(in srgb,var(--flax) 6%,transparent)}
+.hb .t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);line-height:1.9;padding-block:2px}
+.hb .v{text-align:left;font-weight:600;font-variant-numeric:tabular-nums}
+.hb .track{grid-column:1/-1;height:10px;border-radius:4px;background:color-mix(in srgb,var(--ink) 6%,transparent);overflow:hidden}
+.hb .track i{display:block;height:100%;border-radius:4px;background:var(--flax);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.hb.flag .t::after{content:"أكثر خرافة منتشرة";font-family:var(--f-hand);color:var(--ribbon);margin-inline-start:8px;font-size:.95rem}
+.hb.flag .track i{background:var(--ribbon)}
+.stack{display:grid;gap:12px}
+.srow .t{font-size:.86rem;margin-bottom:4px;display:flex;justify-content:space-between;gap:8px}
+.srow .t span{color:var(--muted);font-size:.78rem}
+.sbar{display:flex;height:22px;gap:2px}
+.sbar i{display:block;height:100%;min-width:2px;transition:flex-grow .8s}
+.sbar i:first-child{border-radius:0 5px 5px 0}.sbar i:last-child{border-radius:5px 0 0 5px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--ink-2);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper);padding:8px 12px;border-radius:10px;font-size:.8rem;line-height:1.5;opacity:0;transform:translate(-50%,-110%);transition:opacity .15s;white-space:nowrap}
+.tip b{font-size:.95rem}
+.hidden-note{grid-column:span 12;text-align:center;padding:60px 20px;background:var(--surface);border:1px dashed var(--line);border-radius:20px}
+.hidden-note h2{font-family:var(--f-display);font-size:2rem;line-height:1.5;margin:0 0 6px}
+footer{position:relative;z-index:1;padding-block:20px 40px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--line)}
+/* login */
+.login{min-height:100dvh;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));position:relative;z-index:1}
+.lbox{width:min(420px,100%);background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:30px 26px;text-align:center;box-shadow:0 30px 60px -30px rgba(30,24,90,.35)}
+.lbox .mark{margin:0 auto 14px;width:84px}
+.lbox h1{font-size:2.6rem;margin-bottom:4px}
+.lbox p{color:var(--ink-2);font-size:.88rem;margin:0 0 18px}
+.lbox input{width:100%;min-height:50px;border-radius:14px;border:1.5px solid var(--line);background:var(--paper);padding:0 14px;font-size:1rem;margin-bottom:10px}
+.lbox input:focus{outline:0;border-color:var(--flax)}
+.lbox .btn{width:100%;justify-content:center;min-height:50px;font-size:.95rem}
+.lbox .or{margin:14px 0 10px;font-size:.8rem;color:var(--muted)}
+.lerr{color:var(--ribbon);font-size:.85rem;min-height:1.3em;margin:6px 0 0}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th,td{text-align:start;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--ink-2);font-weight:600}
+td.n{font-variant-numeric:tabular-nums;text-align:left}
+details summary{cursor:pointer;color:var(--flax);font-weight:600;font-size:.85rem;margin-top:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+</svg>
+
+<section class="login" id="login">
+  <div class="lbox">
+    <span class="mark" role="img" aria-label="منظمة ممكن"></span>
+    <h1>حديقة النتائج</h1>
+    <p>لوحة فريق المركز الإعلامي لاستبيان «زهرة الكتان». أرقام مجمّعة فقط، بدون أي إجابة فردية.</p>
+    <form id="lform" autocomplete="off"><input id="key" type="password" placeholder="مفتاح الدخول" aria-label="مفتاح الدخول"><button class="btn primary" type="submit">دخول</button></form>
+    <p class="lerr" id="lerr"></p>
+    <div class="or">أو</div>
+    <button class="btn" type="button" id="demoBtn">شوفي عرض تجريبي ببيانات افتراضية</button>
+  </div>
+</section>
+
+<div id="app" hidden>
+<header><div class="wrap">
+  <span class="mark" role="img" aria-label="منظمة ممكن"></span>
+  <h1>حديقة النتائج</h1>
+  <span class="live" id="live"><i></i><span id="liveT">مباشر</span></span>
+  <span class="sp"></span>
+  <div class="ctl">
+    <div class="seg" id="range" role="group" aria-label="الفترة"><button data-r="7">7 أيام</button><button data-r="14" aria-pressed="true">14 يوم</button><button data-r="0">الكل</button></div>
+    <button class="btn" type="button" id="csv"><svg><use href="#i-down"/></svg>CSV</button>
+    <button class="btn" type="button" id="logout" aria-label="خروج"><svg><use href="#i-out"/></svg></button>
+  </div>
+</div></header>
+<main class="wrap">
+  <div class="intro"><div><span class="hand" id="modeNote"></span><p>كل الأرقام مجمّعة. الإيميلات والأسماء ما تتخزنش مع الإجابات، والأرقام تختفي لو المشاركات أقل من 10. تتحدث كل 10 ثواني.</p></div><p class="num" id="updated"></p></div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer><div class="wrap">منظمة ممكن للتوعية والإعلام · المركز الإعلامي · للفريق فقط</div></footer>
+</div>
+<div class="tip" id="tip" role="status"></div>
+
+<script src="config.js"></script>
+<script>
+/* The backend URL comes from config.js. The page calls GET {API}/stats with header X-Admin-Key. */
+const API=String(window.ZK_API||"").replace(/\/$/,"");
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>Number(n).toLocaleString("en-US"),pct=v=>Math.round(v*100)+"%";
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const L={
+ k:["كتلة الثدي يرافقها ألم دائماً","موعد الماموغرام تحدده الطبيبة حسب العمر والتاريخ العائلي","أغلب الكتل مش سرطان، لكن أي تغيّر يستاهل فحص","العلامات اللي تستدعي زيارة الطبيبة","الفحص الذاتي وحده يغني عن الطبيبة","بدون تاريخ عائلي ما يمكنش تصابي","سرطان الثدي يصيب النساء فقط","في البداية غالباً تظهر أعراض واضحة"],
+ age:["أقل من 25","من 25 إلى 39","من 40 إلى 49","50 فأكثر"],
+ city:["طرابلس","بنغازي","مصراتة","الزاوية","زليتن","سبها","البيضاء","سرت","الخمس","أخرى"],
+ p1:["نعم، بانتظام","أحياناً","لا","أفضّل ما نجاوبش"],
+ p2:["خلال 12 شهر","من أكثر من سنة","لا","أفضّل ما نجاوبش"],
+ p3:["نعم","لا","أفضّل ما نجاوبش"],
+ p4:["نعم، وشاركته مع طبيبة","نعم، بدون استشارة","لا","أفضّل ما نجاوبش"],
+ s1:["نحجز موعد فوراً","نستنى نشوف","نبحث ونسأل أولاً"],
+ s1b:["معلومة أوضح","مرافقة من العائلة","عيادة قريبة ومعروفة","تكلفة أقل","طبيبة امرأة","أخرى"],
+ s2:["الخوف من النتيجة","الإحراج","ضيق الوقت","التكلفة","بُعد المراكز","ما نعرفش وين نروح","رأي العائلة أو الأعراف","عدم الحاجة دون أعراض","ما فيش عائق","أخرى"],
+ s3:["تكلمت معاهن","تنوي بعد الرحلة","ما تكلمتش","ما فيش حد"]};
+const SEQ4=["var(--f5)","var(--f3)","var(--f2)","var(--none)"],SEQ3=["var(--f5)","var(--f2)","var(--none)"];
+
+/* ---------- demo data (clearly marked) ---------- */
+function rnd(seed){let a=seed;return()=>{a=(a*16807)%2147483647;return a/2147483647}}
+function demo(){const r=rnd(42),days=[];const today=new Date();for(let i=27;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);days.push({d:d.toISOString().slice(0,10),c:Math.round(12+r()*30+(i<10?(10-i)*4:0))})}
+  const n=days.reduce((a,b)=>a+b.c,0),mk=(w)=>{const s=w.reduce((a,b)=>a+b,0);return w.map(x=>Math.round(x/s*n))};
+  const k=[.46,.71,.83,.78,.58,.52,.34,.41];const sd=mk([2,5,9,16,24,27,22,14,7]);
+  return{demo:true,n,updated:new Date().toISOString(),daily:days,k,scoreDist:sd,avgScore:sd.reduce((a,c,i)=>a+c*i,0)/n,age:mk([22,41,24,13]),city:mk([38,22,11,7,5,4,5,3,3,2]),
+    p1:mk([31,38,24,7]),p2:mk([18,21,54,7]),p3:mk([34,58,8]).map(x=>Math.round(x*.37)),p4:mk([22,29,41,8]),s1:mk([57,18,25]),s1b:mk([31,24,30,22,35,5]).map(x=>Math.round(x*.43)),s2:mk([36,18,27,24,15,19,9,22,12,4]),s3:mk([29,46,19,6])}}
+
+/* ---------- auth + polling ---------- */
+let KEY="",T=null,DATA=null,range=14;
+async function fetchStats(){const r=await fetch(API+"/stats",{headers:{"X-Admin-Key":KEY}});if(r.status===401)throw{auth:1};if(!r.ok)throw{net:1};return r.json()}
+async function load(){try{DATA=await fetchStats();draw()}catch(e){if(e.auth){logout();$("#lerr").textContent="المفتاح غير صحيح.";return}$("#liveT").textContent="انقطع الاتصال، نعيدو المحاولة…"}}
+$("#lform").onsubmit=e=>{e.preventDefault();if(!API){$("#lerr").textContent="لم يُضبط عنوان الخادم بعد. جرّبي العرض التجريبي.";return}KEY=$("#key").value;$("#key").value="";enter(false);load();T=setInterval(load,10000)};
+$("#demoBtn").onclick=()=>{DATA=demo();enter(true);draw()};
+function enter(isDemo){$("#login").hidden=true;$("#app").hidden=false;$("#live").classList.toggle("demo",isDemo);$("#liveT").textContent=isDemo?"عرض تجريبي":"مباشر";$("#modeNote").textContent=isDemo?"بيانات افتراضية للعرض فقط":"بيانات حقيقية"}
+function logout(){clearInterval(T);KEY="";DATA=null;$("#app").hidden=true;$("#login").hidden=false}
+$("#logout").onclick=logout;
+$("#range").onclick=e=>{const b=e.target.closest("button");if(!b)return;range=+b.dataset.r;$$("#range button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));draw()};
+
+/* ---------- tooltip ---------- */
+const tip=$("#tip");function showTip(e,html){tip.innerHTML=html;tip.style.left=e.clientX+"px";tip.style.top=e.clientY-8+"px";tip.style.opacity=1}function hideTip(){tip.style.opacity=0}
+document.addEventListener("pointermove",e=>{const t=e.target.closest("[data-tip]");if(t)showTip(e,t.dataset.tip);else hideTip()});
+
+/* ---------- components ---------- */
+const sum=a=>a.reduce((x,y)=>x+y,0);
+function hbars(labels,vals,{total,asPct=true,sort=true,flagMin=false}={}){const T=total||sum(vals)||1;let rows=labels.map((l,i)=>({l,v:vals[i],p:asPct?vals[i]:vals[i]/T}));if(sort)rows.sort((a,b)=>b.p-a.p);const max=Math.max(...rows.map(r=>r.p),.0001),minP=Math.min(...rows.map(r=>r.p));
+  return`<div class="hbars">${rows.map(r=>`<div class="hb ${flagMin&&r.p===minP?"flag":""}" data-tip="<b>${esc(r.l)}</b><br>${pct(r.p)}${asPct?"":" · "+fmt(r.v)+" مشاركة"}"><span class="t">${esc(r.l)}</span><span class="v">${pct(r.p)}</span><span class="track"><i style="width:${r.p/max*100}%"></i></span></div>`).join("")}</div>`}
+function stacked(title,labels,vals,colors,note){const T=sum(vals)||1;return`<div class="srow"><div class="t">${title}<span class="num">${note||fmt(T)+" إجابة"}</span></div><div class="sbar">${vals.map((v,i)=>`<i style="flex-grow:${v};background:${colors[i]}" data-tip="<b>${esc(labels[i])}</b><br>${pct(v/T)} · ${fmt(v)}"></i>`).join("")}</div></div>`}
+const legend=(labels,colors)=>`<div class="legend">${labels.map((l,i)=>`<span><i style="background:${colors[i]}"></i>${esc(l)}</span>`).join("")}</div>`;
+function spark(vals){const W=200,H=42,max=Math.max(...vals,1),pts=vals.map((v,i)=>[i/(vals.length-1)*W,H-4-v/max*(H-8)]);const d="M"+pts.map(p=>p.map(n=>n.toFixed(1)).join(" ")).join("L");const e=pts[pts.length-1];
+  return`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${W} ${H}L0 ${H}Z" fill="var(--flax)" opacity=".12"/><path d="${d}" fill="none" stroke="var(--flax)" stroke-width="2" vector-effect="non-scaling-stroke"/><circle cx="${e[0]}" cy="${e[1]}" r="3.5" fill="var(--flax)"/></svg>`}
+function area(days){const W=760,H=230,P={l:26,r:40,t:24,b:28},iw=W-P.l-P.r,ih=H-P.t-P.b;
+  const raw=Math.max(...days.map(d=>d.c),1),step=raw>40?Math.ceil(raw/4/10)*10:Math.max(1,Math.ceil(raw/4)),top=Math.ceil(raw*1.1/step)*step,ticks=[];for(let v=0;v<=top;v+=step)ticks.push(v);
+  const x=i=>P.l+iw-(i/(days.length-1||1))*iw,y=v=>P.t+ih-v/top*ih;/* RTL: newest on the left */
+  const pts=days.map((d,i)=>[x(i),y(d.c)]),line="M"+pts.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join("L");
+  const lbl=days.map((d,i)=>i%Math.ceil(days.length/7)===0||i===days.length-1?`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${d.d.slice(5).replace("-","/")}</text>`:"").join("");
+  const hits=days.map((d,i)=>`<rect class="hit" x="${x(i)-iw/days.length/2}" y="${P.t}" width="${iw/days.length}" height="${ih}" data-tip="<b>${fmt(d.c)}</b> مشاركة<br>${d.d}"/>`).join("");
+  const e=pts[pts.length-1];
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="المشاركات اليومية">${ticks.map(v=>`<line class="gl" x1="${P.l}" x2="${P.l+iw}" y1="${y(v)}" y2="${y(v)}"/><text x="${W-4}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join("")}
+   <path d="${line}L${pts[pts.length-1][0]} ${P.t+ih}L${pts[0][0]} ${P.t+ih}Z" fill="var(--flax)" opacity=".12"/><path d="${line}" fill="none" stroke="var(--flax)" stroke-width="2"/><circle cx="${e[0]}" cy="${e[1]}" r="5" fill="var(--flax)" stroke="var(--surface)" stroke-width="2"/><text class="val" x="${e[0]}" y="${e[1]-12}" text-anchor="middle">${fmt(days[days.length-1].c)}</text>${lbl}${hits}</svg>`}
+function hist(vals){const W=520,H=220,P={l:8,r:8,t:22,b:28},iw=W-P.l-P.r,ih=H-P.t-P.b,max=Math.max(...vals,1),bw=iw/vals.length;const T=sum(vals)||1;
+  const col=i=>i<=3?"var(--f2)":i<=6?"var(--f3)":"var(--f5)";
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="توزيع الدرجات">${vals.map((v,i)=>{const h=v/max*ih,xx=P.l+iw-(i+1)*bw+1;return`<rect x="${xx}" y="${P.t+ih-h}" width="${bw-2}" height="${h}" rx="4" fill="${col(i)}" data-tip="<b>${i} من 8</b><br>${fmt(v)} · ${pct(v/T)}"/><text x="${xx+bw/2}" y="${H-8}" text-anchor="middle">${i}</text>${v===max?`<text class="val" x="${xx+bw/2}" y="${P.t+ih-h-6}" text-anchor="middle">${pct(v/T)}</text>`:""}`}).join("")}</svg>${legend(["منخفضة (من 0 إلى 3)","متوسطة (من 4 إلى 6)","مرتفعة (7 أو 8)"],["var(--f2)","var(--f3)","var(--f5)"])}`}
+const card=(cls,title,sub,body)=>`<section class="card ${cls}"><div class="chead"><div><h2>${title}</h2>${sub?`<p class="sub">${sub}</p>`:""}</div></div>${body}</section>`;
+
+/* ---------- draw ---------- */
+function draw(){const d=DATA;if(!d)return;$("#updated").textContent="آخر تحديث: "+new Date(d.updated||Date.now()).toLocaleTimeString("en-GB");
+  if(d.hidden||d.n<10){$("#grid").innerHTML=`<div class="hidden-note"><h2 class="num">${fmt(d.n)} مشاركة حتى الآن</h2><p>نعرضو الأرقام لما توصل المشاركات 10 على الأقل، حتى ما تكونش مضللة.</p></div>`;return}
+  const days=range?d.daily.slice(-range):d.daily,n=d.n,T7=sum(d.daily.slice(-7).map(x=>x.c)),P7=sum(d.daily.slice(-14,-7).map(x=>x.c));
+  const delta=P7?Math.round((T7-P7)/P7*100):0,clinical=(d.p2[0]+d.p2[1])/Math.max(1,d.p2[0]+d.p2[1]+d.p2[2]),share=(d.s3[0]+d.s3[1])/Math.max(1,sum(d.s3));
+  const high=sum(d.scoreDist.slice(7))/n;
+  const kpis=[["المشاركات",`${fmt(n)}`,P7?`${delta>=0?"+":""}${delta}% عن الأسبوع اللي قبله`:"أول أسبوع للاستبيان",spark(d.daily.slice(-14).map(x=>x.c))],
+    ["متوسط المعرفة",`${d.avgScore.toFixed(1)}<small> من 8</small>`,`${pct(high)} معرفتهن مرتفعة (7 أو 8 من 8)`,""],
+    ["أجرين فحصاً سريرياً",pct(clinical),`من ${fmt(d.p2[0]+d.p2[1]+d.p2[2])} أجبن على السؤال`,""],
+    ["ناويات يشجّعن غيرهن",pct(share),"تكلمت أو تنوي تتكلم مع أم أو أخت أو صاحبة",""]];
+  const kOrder=L.k.map((l,i)=>({l,v:d.k[i]}));
+  $("#grid").innerHTML=
+    kpis.map(k=>`<section class="card s3 kpi"><div class="lab">${k[0]}</div><div class="val num">${k[1]}</div><div class="note num">${k[2]}</div>${k[3]}</section>`).join("")+
+    card("s8","المشاركات اليومية",`${range?"آخر "+range+" يوم":"كل الفترة"} · الأحدث على اليسار`,`<div class="chart">${area(days)}</div>`)+
+    card("s4","توزيع الدرجات","عدد الإجابات الصحيحة من 8",`<div class="chart">${hist(d.scoreDist)}</div>`)+
+    card("s7","نسبة الإجابة الصحيحة لكل جملة","مرتبة من الأعلى للأقل · الأحمر = أكثر خرافة منتشرة تحتاج تركيز في الحملة",hbars(kOrder.map(r=>r.l),kOrder.map(r=>r.v),{flagMin:true}))+
+    card("s5","الممارسة","من اللواتي أجبن على كل سؤال",`<div class="stack">${stacked("تعرف شكلها الطبيعي وتنتبه للتغيّر",L.p1,d.p1,SEQ4)}${stacked("فحص سريري عند طبيبة",L.p2,d.p2,SEQ4)}${stacked("ماموغرام (40 سنة فأكثر)",L.p3,d.p3,SEQ3)}${stacked("تعرف التاريخ العائلي",L.p4,d.p4,SEQ4)}</div>${legend(["نعم / حديثاً","جزئياً","لا","أفضّل ما نجاوبش"],SEQ4)}`)+
+    card("s6","العوائق اللي تأخر الفحص","نسبة المشاركات اللي اختارن كل عائق (حتى اختيارين)",hbars(L.s2,d.s2,{asPct:false,total:n}))+
+    card("s6","شن يخليها تحجز بدري؟","للي قالن يستنين أو يسألن أولاً",hbars(L.s1b,d.s1b,{asPct:false,total:Math.max(1,d.s1[1]+d.s1[2])}))+
+    card("s4","أول تصرف لو لاحظت تغيّر","",`<div class="stack">${stacked("كل المشاركات",L.s1,d.s1,SEQ3)}</div>${legend(L.s1,SEQ3)}`+`<div class="stack" style="margin-top:16px">${stacked("تشجيع الأخريات هذا الشهر",L.s3,d.s3,SEQ4)}</div>${legend(L.s3,SEQ4)}`)+
+    card("s4","الفئات العمرية","",hbars(L.age,d.age,{asPct:false,total:n,sort:false}))+
+    card("s4","المدن","",hbars(L.city,d.city,{asPct:false,total:n}))+
+    card("","جدول البيانات","نفس الأرقام كجدول، للنسخ أو المراجعة",`<details><summary>اعرضي الجدول</summary><div class="chart"><table><thead><tr><th>البند</th><th>الخيار</th><th>العدد / النسبة</th></tr></thead><tbody>${rowsFor(d).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td class="n">${r[2]}</td></tr>`).join("")}</tbody></table></div></details>`)}
+function rowsFor(d){const R=[];R.push(["المشاركات","المجموع",fmt(d.n)]);L.k.forEach((l,i)=>R.push(["المعرفة",l,pct(d.k[i])]));d.scoreDist.forEach((v,i)=>R.push(["الدرجة",i+" من 8",fmt(v)]));
+  ["age","city","p1","p2","p3","p4","s1","s1b","s2","s3"].forEach(k=>L[k].forEach((l,i)=>R.push([k,l,fmt(d[k][i]||0)])));d.daily.forEach(x=>R.push(["يومي",x.d,fmt(x.c)]));return R}
+$("#csv").onclick=()=>{if(!DATA)return;const csv="﻿"+[["section","option","value"],...rowsFor(DATA)].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="zahrat-alkattan-stats.csv";a.click()};
+if(location.hash==="#demo")$("#demoBtn").click();
+})();
+</script>
+</body>
+</html>
