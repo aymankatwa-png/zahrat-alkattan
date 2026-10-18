@@ -76,7 +76,7 @@ main{position:relative;z-index:1;padding-block:22px 60px}
 .hb .v{text-align:left;font-weight:600;font-variant-numeric:tabular-nums}
 .hb .track{grid-column:1/-1;height:10px;border-radius:4px;background:color-mix(in srgb,var(--ink) 6%,transparent);overflow:hidden}
 .hb .track i{display:block;height:100%;border-radius:4px;background:var(--flax);transition:width .8s cubic-bezier(.2,.8,.2,1)}
-.hb.flag .t::after{content:"أكثر خرافة منتشرة";font-family:var(--f-hand);color:var(--ribbon);margin-inline-start:8px;font-size:.95rem}
+.hb.flag .t::after{content:"أكثر خرافة شائعة";font-family:var(--f-hand);color:var(--ribbon);margin-inline-start:8px;font-size:.95rem}
 .hb.flag .track i{background:var(--ribbon)}
 .stack{display:grid;gap:12px}
 .srow .t{font-size:.86rem;margin-bottom:4px;display:flex;justify-content:space-between;gap:8px}
@@ -126,7 +126,7 @@ details summary{cursor:pointer;color:var(--flax);font-weight:600;font-size:.85re
     <form id="lform" autocomplete="off"><input id="key" type="password" placeholder="مفتاح الدخول" aria-label="مفتاح الدخول"><button class="btn primary" type="submit">دخول</button></form>
     <p class="lerr" id="lerr"></p>
     <div class="or">أو</div>
-    <button class="btn" type="button" id="demoBtn">شوفي عرض تجريبي ببيانات افتراضية</button>
+    <button class="btn" type="button" id="demoBtn">اعرض نسخة تجريبية ببيانات افتراضية</button>
   </div>
 </section>
 
@@ -143,7 +143,7 @@ details summary{cursor:pointer;color:var(--flax);font-weight:600;font-size:.85re
   </div>
 </div></header>
 <main class="wrap">
-  <div class="intro"><div><span class="hand" id="modeNote"></span><p>كل الأرقام مجمّعة. الإيميلات والأسماء ما تتخزنش مع الإجابات، والأرقام تختفي لو المشاركات أقل من 10. تتحدث كل 10 ثواني.</p></div><p class="num" id="updated"></p></div>
+  <div class="intro"><div><span class="hand" id="modeNote"></span><p>جميع الأرقام مجمّعة. لا تُخزَّن الأسماء ولا عناوين البريد مع الإجابات، وتُخفى الأرقام إذا قلّت المشاركات عن 10. تتحدّث البيانات كل 10 ثوانٍ.</p></div><p class="num" id="updated"></p></div>
   <div class="grid" id="grid"></div>
 </main>
 <footer><div class="wrap">منظمة ممكن للتوعية والإعلام · المركز الإعلامي · للفريق فقط</div></footer>
@@ -159,17 +159,17 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const fmt=n=>Number(n).toLocaleString("en-US"),pct=v=>Math.round(v*100)+"%";
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const L={
- k:["كتلة الثدي يرافقها ألم دائماً","موعد الماموغرام تحدده الطبيبة حسب العمر والتاريخ العائلي","أغلب الكتل مش سرطان، لكن أي تغيّر يستاهل فحص","العلامات اللي تستدعي زيارة الطبيبة","الفحص الذاتي وحده يغني عن الطبيبة","بدون تاريخ عائلي ما يمكنش تصابي","سرطان الثدي يصيب النساء فقط","في البداية غالباً تظهر أعراض واضحة"],
+ k:["كتلة الثدي يرافقها ألم دائماً","موعد الماموغرام تحدده الطبيبة حسب العمر والتاريخ العائلي","أغلب الكتل ليست سرطاناً، لكن أي تغيّر يستحق الفحص","العلامات التي تستدعي زيارة الطبيبة","الفحص الذاتي وحده يغني عن الطبيبة","من دون تاريخ عائلي لا يمكن الإصابة","سرطان الثدي يصيب النساء فقط","في البداية غالباً تظهر أعراض واضحة"],
  age:["أقل من 25","من 25 إلى 39","من 40 إلى 49","50 فأكثر"],
  city:["طرابلس","بنغازي","مصراتة","الزاوية","زليتن","سبها","البيضاء","سرت","الخمس","أخرى"],
- p1:["نعم، بانتظام","أحياناً","لا","أفضّل ما نجاوبش"],
- p2:["خلال 12 شهر","من أكثر من سنة","لا","أفضّل ما نجاوبش"],
- p3:["نعم","لا","أفضّل ما نجاوبش"],
- p4:["نعم، وشاركته مع طبيبة","نعم، بدون استشارة","لا","أفضّل ما نجاوبش"],
- s1:["نحجز موعد فوراً","نستنى نشوف","نبحث ونسأل أولاً"],
+ p1:["نعم، بانتظام","أحياناً","لا","أفضّل عدم الإجابة"],
+ p2:["خلال 12 شهر","من أكثر من سنة","لا","أفضّل عدم الإجابة"],
+ p3:["نعم","لا","أفضّل عدم الإجابة"],
+ p4:["نعم، وشاركته مع طبيبة","نعم، دون استشارة","لا","أفضّل عدم الإجابة"],
+ s1:["حجز موعد فوراً","الانتظار والمراقبة","البحث والسؤال أولاً"],
  s1b:["معلومة أوضح","مرافقة من العائلة","عيادة قريبة ومعروفة","تكلفة أقل","طبيبة امرأة","أخرى"],
- s2:["الخوف من النتيجة","الإحراج","ضيق الوقت","التكلفة","بُعد المراكز","ما نعرفش وين نروح","رأي العائلة أو الأعراف","عدم الحاجة دون أعراض","ما فيش عائق","أخرى"],
- s3:["تكلمت معاهن","تنوي بعد الرحلة","ما تكلمتش","ما فيش حد"]};
+ s2:["الخوف من النتيجة","الإحراج","ضيق الوقت","التكلفة","بُعد المراكز","لا تعرف إلى أين تذهب","رأي العائلة أو الأعراف","عدم الحاجة دون أعراض","لا يوجد عائق","أخرى"],
+ s3:["تحدثت معهن","تنوي بعد الرحلة","لم تتحدث","لا يوجد أحد"]};
 const SEQ4=["var(--f5)","var(--f3)","var(--f2)","var(--none)"],SEQ3=["var(--f5)","var(--f2)","var(--none)"];
 
 /* ---------- demo data (clearly marked) ---------- */
@@ -183,8 +183,8 @@ function demo(){const r=rnd(42),days=[];const today=new Date();for(let i=27;i>=0
 /* ---------- auth + polling ---------- */
 let KEY="",T=null,DATA=null,range=14;
 async function fetchStats(){const r=await fetch(API+"/stats",{headers:{"X-Admin-Key":KEY}});if(r.status===401)throw{auth:1};if(!r.ok)throw{net:1};return r.json()}
-async function load(){try{DATA=await fetchStats();draw()}catch(e){if(e.auth){logout();$("#lerr").textContent="المفتاح غير صحيح.";return}$("#liveT").textContent="انقطع الاتصال، نعيدو المحاولة…"}}
-$("#lform").onsubmit=e=>{e.preventDefault();if(!API){$("#lerr").textContent="لم يُضبط عنوان الخادم بعد. جرّبي العرض التجريبي.";return}KEY=$("#key").value;$("#key").value="";enter(false);load();T=setInterval(load,10000)};
+async function load(){try{DATA=await fetchStats();draw()}catch(e){if(e.auth){logout();$("#lerr").textContent="المفتاح غير صحيح.";return}$("#liveT").textContent="انقطع الاتصال، جارٍ إعادة المحاولة…"}}
+$("#lform").onsubmit=e=>{e.preventDefault();if(!API){$("#lerr").textContent="لم يُضبط عنوان الخادم بعد. جرّب العرض التجريبي.";return}KEY=$("#key").value;$("#key").value="";enter(false);load();T=setInterval(load,10000)};
 $("#demoBtn").onclick=()=>{DATA=demo();enter(true);draw()};
 function enter(isDemo){$("#login").hidden=true;$("#app").hidden=false;$("#live").classList.toggle("demo",isDemo);$("#liveT").textContent=isDemo?"عرض تجريبي":"مباشر";$("#modeNote").textContent=isDemo?"بيانات افتراضية للعرض فقط":"بيانات حقيقية"}
 function logout(){clearInterval(T);KEY="";DATA=null;$("#app").hidden=true;$("#login").hidden=false}
@@ -219,27 +219,27 @@ const card=(cls,title,sub,body)=>`<section class="card ${cls}"><div class="chead
 
 /* ---------- draw ---------- */
 function draw(){const d=DATA;if(!d)return;$("#updated").textContent="آخر تحديث: "+new Date(d.updated||Date.now()).toLocaleTimeString("en-GB");
-  if(d.hidden||d.n<10){$("#grid").innerHTML=`<div class="hidden-note"><h2 class="num">${fmt(d.n)} مشاركة حتى الآن</h2><p>نعرضو الأرقام لما توصل المشاركات 10 على الأقل، حتى ما تكونش مضللة.</p></div>`;return}
+  if(d.hidden||d.n<10){$("#grid").innerHTML=`<div class="hidden-note"><h2 class="num">${fmt(d.n)} مشاركة حتى الآن</h2><p>نعرض الأرقام عندما تصل المشاركات إلى 10 على الأقل، حتى لا تكون مضللة.</p></div>`;return}
   const days=range?d.daily.slice(-range):d.daily,n=d.n,T7=sum(d.daily.slice(-7).map(x=>x.c)),P7=sum(d.daily.slice(-14,-7).map(x=>x.c));
   const delta=P7?Math.round((T7-P7)/P7*100):0,clinical=(d.p2[0]+d.p2[1])/Math.max(1,d.p2[0]+d.p2[1]+d.p2[2]),share=(d.s3[0]+d.s3[1])/Math.max(1,sum(d.s3));
   const high=sum(d.scoreDist.slice(7))/n;
-  const kpis=[["المشاركات",`${fmt(n)}`,P7?`${delta>=0?"+":""}${delta}% عن الأسبوع اللي قبله`:"أول أسبوع للاستبيان",spark(d.daily.slice(-14).map(x=>x.c))],
+  const kpis=[["المشاركات",`${fmt(n)}`,P7?`${delta>=0?"+":""}${delta}% مقارنةً بالأسبوع السابق`:"أول أسبوع للاستبيان",spark(d.daily.slice(-14).map(x=>x.c))],
     ["متوسط المعرفة",`${d.avgScore.toFixed(1)}<small> من 8</small>`,`${pct(high)} معرفتهن مرتفعة (7 أو 8 من 8)`,""],
     ["أجرين فحصاً سريرياً",pct(clinical),`من ${fmt(d.p2[0]+d.p2[1]+d.p2[2])} أجبن على السؤال`,""],
-    ["ناويات يشجّعن غيرهن",pct(share),"تكلمت أو تنوي تتكلم مع أم أو أخت أو صاحبة",""]];
+    ["ناويات يشجّعن غيرهن",pct(share),"تحدثت أو تنوي التحدث مع أم أو أخت أو صديقة",""]];
   const kOrder=L.k.map((l,i)=>({l,v:d.k[i]}));
   $("#grid").innerHTML=
     kpis.map(k=>`<section class="card s3 kpi"><div class="lab">${k[0]}</div><div class="val num">${k[1]}</div><div class="note num">${k[2]}</div>${k[3]}</section>`).join("")+
     card("s8","المشاركات اليومية",`${range?"آخر "+range+" يوم":"كل الفترة"} · الأحدث على اليسار`,`<div class="chart">${area(days)}</div>`)+
     card("s4","توزيع الدرجات","عدد الإجابات الصحيحة من 8",`<div class="chart">${hist(d.scoreDist)}</div>`)+
-    card("s7","نسبة الإجابة الصحيحة لكل جملة","مرتبة من الأعلى للأقل · الأحمر = أكثر خرافة منتشرة تحتاج تركيز في الحملة",hbars(kOrder.map(r=>r.l),kOrder.map(r=>r.v),{flagMin:true}))+
-    card("s5","الممارسة","من اللواتي أجبن على كل سؤال",`<div class="stack">${stacked("تعرف شكلها الطبيعي وتنتبه للتغيّر",L.p1,d.p1,SEQ4)}${stacked("فحص سريري عند طبيبة",L.p2,d.p2,SEQ4)}${stacked("ماموغرام (40 سنة فأكثر)",L.p3,d.p3,SEQ3)}${stacked("تعرف التاريخ العائلي",L.p4,d.p4,SEQ4)}</div>${legend(["نعم / حديثاً","جزئياً","لا","أفضّل ما نجاوبش"],SEQ4)}`)+
-    card("s6","العوائق اللي تأخر الفحص","نسبة المشاركات اللي اختارن كل عائق (حتى اختيارين)",hbars(L.s2,d.s2,{asPct:false,total:n}))+
-    card("s6","شن يخليها تحجز بدري؟","للي قالن يستنين أو يسألن أولاً",hbars(L.s1b,d.s1b,{asPct:false,total:Math.max(1,d.s1[1]+d.s1[2])}))+
+    card("s7","نسبة الإجابة الصحيحة لكل جملة","مرتبة من الأعلى للأقل · الأحمر = أكثر خرافة شائعة، وتحتاج إلى تركيز في الحملة",hbars(kOrder.map(r=>r.l),kOrder.map(r=>r.v),{flagMin:true}))+
+    card("s5","الممارسة","من اللواتي أجبن على كل سؤال",`<div class="stack">${stacked("تعرف شكلها الطبيعي وتنتبه للتغيّر",L.p1,d.p1,SEQ4)}${stacked("فحص سريري عند طبيبة",L.p2,d.p2,SEQ4)}${stacked("ماموغرام (40 سنة فأكثر)",L.p3,d.p3,SEQ3)}${stacked("تعرف التاريخ العائلي",L.p4,d.p4,SEQ4)}</div>${legend(["نعم / حديثاً","جزئياً","لا","أفضّل عدم الإجابة"],SEQ4)}`)+
+    card("s6","العوائق التي تؤخر الفحص","نسبة المشاركات اللواتي اخترن كل عائق (حتى اختيارين)",hbars(L.s2,d.s2,{asPct:false,total:n}))+
+    card("s6","ما الذي يدفعها إلى الحجز مبكراً؟","لمن اخترن الانتظار أو السؤال أولاً",hbars(L.s1b,d.s1b,{asPct:false,total:Math.max(1,d.s1[1]+d.s1[2])}))+
     card("s4","أول تصرف لو لاحظت تغيّر","",`<div class="stack">${stacked("كل المشاركات",L.s1,d.s1,SEQ3)}</div>${legend(L.s1,SEQ3)}`+`<div class="stack" style="margin-top:16px">${stacked("تشجيع الأخريات هذا الشهر",L.s3,d.s3,SEQ4)}</div>${legend(L.s3,SEQ4)}`)+
     card("s4","الفئات العمرية","",hbars(L.age,d.age,{asPct:false,total:n,sort:false}))+
     card("s4","المدن","",hbars(L.city,d.city,{asPct:false,total:n}))+
-    card("","جدول البيانات","نفس الأرقام كجدول، للنسخ أو المراجعة",`<details><summary>اعرضي الجدول</summary><div class="chart"><table><thead><tr><th>البند</th><th>الخيار</th><th>العدد / النسبة</th></tr></thead><tbody>${rowsFor(d).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td class="n">${r[2]}</td></tr>`).join("")}</tbody></table></div></details>`)}
+    card("","جدول البيانات","نفس الأرقام كجدول، للنسخ أو المراجعة",`<details><summary>اعرض الجدول</summary><div class="chart"><table><thead><tr><th>البند</th><th>الخيار</th><th>العدد / النسبة</th></tr></thead><tbody>${rowsFor(d).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td class="n">${r[2]}</td></tr>`).join("")}</tbody></table></div></details>`)}
 function rowsFor(d){const R=[];R.push(["المشاركات","المجموع",fmt(d.n)]);L.k.forEach((l,i)=>R.push(["المعرفة",l,pct(d.k[i])]));d.scoreDist.forEach((v,i)=>R.push(["الدرجة",i+" من 8",fmt(v)]));
   ["age","city","p1","p2","p3","p4","s1","s1b","s2","s3"].forEach(k=>L[k].forEach((l,i)=>R.push([k,l,fmt(d[k][i]||0)])));d.daily.forEach(x=>R.push(["يومي",x.d,fmt(x.c)]));return R}
 $("#csv").onclick=()=>{if(!DATA)return;const csv="﻿"+[["section","option","value"],...rowsFor(DATA)].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="zahrat-alkattan-stats.csv";a.click()};
