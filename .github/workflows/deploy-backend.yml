@@ -51,7 +51,7 @@ jobs:
           D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
         run: |
           node build-email.mjs
-          sed -i "s/PASTE-YOUR-D1-DATABASE-ID-HERE/${D1_DATABASE_ID}/" wrangler.toml
+          [ -n "$D1_DATABASE_ID" ] && sed -i "s/database_id = \".*\"/database_id = \"${D1_DATABASE_ID}\"/" wrangler.toml || true
 
       - name: Create tables (safe to run every time)
         env:

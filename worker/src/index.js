@@ -7,7 +7,7 @@
  *   GET  /health   { ok: true }
  *
  * Privacy: name and email are used only to send the email, in memory, and are never stored or logged.
- * Secrets (set in Cloudflare, never in the repo): ADMIN_KEY, BREVO_API_KEY, IP_SALT
+ * Secrets (set in Cloudflare, never in the repo): ADMIN_KEY, BREVO_API_KEY (IP_SALT optional; falls back to ADMIN_KEY)
  * Vars (wrangler.toml): ALLOWED_ORIGINS, MAIL_FROM, MAIL_FROM_NAME, SITE_URL
  */
 import { EMAIL_HTML, EMAIL_TEXT, EMAIL_SUBJECT } from "./email.js";
@@ -114,7 +114,7 @@ async function submit(req, env, ctx, cors) {
   // rate limit per IP (hashed, never stored raw)
   const ip = req.headers.get("CF-Connecting-IP") || "0";
   const win = Math.floor(Date.now() / 600000);
-  const rk = (await sha256((env.IP_SALT || "zk") + ip)).slice(0, 32) + ":" + win;
+  const rk = (await sha256((env.IP_SALT || env.ADMIN_KEY || "zk") + ip)).slice(0, 32) + ":" + win;
   const row = await env.DB.prepare("INSERT INTO rate(key,hits,window) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET hits=hits+1 RETURNING hits").bind(rk, win).first();
   if (row && row.hits > RATE_LIMIT) return json({ error: "too many requests" }, 429, cors);
   ctx.waitUntil(env.DB.prepare("DELETE FROM rate WHERE window < ?").bind(win - 144).run());

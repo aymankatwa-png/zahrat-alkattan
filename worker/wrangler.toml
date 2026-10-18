@@ -13,4 +13,4 @@ MAIL_FROM_NAME = "المركز الإعلامي · منظمة ممكن"
 [[d1_databases]]
 binding = "DB"
 database_name = "zahrat-alkattan"
-database_id = "PASTE-YOUR-D1-DATABASE-ID-HERE"
+database_id = "8dc61a8b-c2bd-4328-a2c0-36045480de80"
