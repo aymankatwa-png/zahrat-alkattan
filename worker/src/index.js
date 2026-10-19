@@ -66,7 +66,7 @@ async function sha256(s) {
   return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
 }
 function safeEqual(a, b) {
-  a = String(a || ""); b = String(b || "");
+  a = String(a || "").trim(); b = String(b || "").trim();   // tolerate stray spaces/newlines from copy-paste
   let diff = a.length ^ b.length;
   for (let i = 0; i < Math.max(a.length, b.length); i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
   return diff === 0 && a.length > 0;
